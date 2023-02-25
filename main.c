@@ -5,43 +5,44 @@
 
 int main(int argc, char **argv){
   
-  int i,N,j;
+  int i, N, j;
+  int x,y;
   Stack s;
-  s.top=NULL;
-  s.size=0;
- 
-  for(i=1;i<argc;i++){
-    push(&s,atoi(argv[i]));
+  s.top = NULL;
+  s.size = 0;
+
+  for (i = 1; i < argc; i++)
+  {
+    N = 0; 
+    x = 0;
+    y= 0;
+
+    for (j = 0; j < strlen(argv[i]); j++) {
+      switch (argv[i][j]) {
+      case '{': push(&s, argv[i][j]); x++;
+                break;
+      case '[': push(&s, argv[i][j]); x++;
+                break;
+      case '}': y++; if (pop(&s) != '{') N = 1;
+                break;
+      case ']': y++; if (pop(&s) != '[') N = 1;
+                break;
+      }
+    }
+    if (s.size > 0) {
+      N = 1;
+    }
+    if (N == 0)
+      printf("argv %d : correct\n", i);
+    else if (x>y)
+      printf("argv %d : incorrect: too many open parenthesis\n", i);
+    else if (y>x)
+      printf("argv %d : incorrect: too many closed parenthesis\n", i);
+    else if (y==x&&N==1)
+      printf("argv %d : incorrect: mismatch\n", i);
+    pop_all(&s);
+
   }
-  pop_all(&s);
-  
-  /*push(&top,5);
-  printf("%d\n",pop(&top));
-  push(&top,7);
-  push(&top,8);
-  printf("%d\n",pop(&top));
-  printf("%d\n",pop(&top));
-  printf("%d\n",pop(&top));*/
- 
- 
-  
 
- /*
- Stack s;
- printf("Checking the parentheses in argv arguments\n");
-  for(i=1;i<argc;i++){
-   
-     for(j=0;j<strlen(argv[i]);j++){
-        Use stack to help with the parentheses
-
-
-     }
-
-
-  }
-*/
-
-
-
-   return 0;
+  return 0;
 }
